@@ -39,6 +39,9 @@ struct EngineConfiguration {
     // Custom args that should be sent
     std::string args;
 
+    // Should process be restarted after every game
+    bool restart{};
+
     // UCI options
     std::vector<std::pair<std::string, std::string>> options;
 

@@ -260,6 +260,7 @@ void UciEngine::quit() {
     if (!initialized_) return;
     Logger::trace<true>("Sending quit to engine {}", config_.name);
     writeEngine("quit");
+    initialized_ = false;
 }
 
 void UciEngine::sendSetoption(const std::string &name, const std::string &value) {
@@ -334,6 +335,15 @@ bool UciEngine::start() {
 
 bool UciEngine::refreshUci() {
     Logger::trace<true>("Refreshing engine {}", config_.name);
+
+    if (config_.restart) {
+        quit();
+        process_.terminate();
+        if (!start()) {
+            Logger::trace<true>("Engine {} didn't restart.", config_.name);
+            return false;
+        }
+    }
 
     if (!ucinewgame()) {
         Logger::trace<true>("Engine {} failed to refresh.", config_.name);

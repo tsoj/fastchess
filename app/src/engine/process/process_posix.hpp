@@ -166,7 +166,7 @@ class Process : public IProcess {
         }
     }
 
-    void terminate() {
+    void terminate() override {
         if (startup_error_) {
             is_initalized_ = false;
             return;
